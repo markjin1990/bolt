@@ -200,7 +200,7 @@ HiveDataSource::HiveDataSource(
   }
   auto remainingFilter = hiveTableHandle_->remainingFilter();
   if (hiveTableHandle_->isFilterPushdownEnabled()) {
-    remainingFilter = extractFiltersFromRemainingFilter(
+    remainingFilter = hive::extractFiltersFromRemainingFilter(
         hiveTableHandle_->remainingFilter(), expressionEvaluator_, filters);
   }
 
