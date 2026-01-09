@@ -39,6 +39,12 @@ void registerCheckedArithmeticFunctions(const std::string& prefix) {
   registerBinaryIntegral<CheckedModulusFunction>({prefix + "mod"});
   registerBinaryIntegral<CheckedDivideFunction>({prefix + "divide"});
   registerUnaryIntegral<CheckedNegateFunction>({prefix + "negate"});
+
+  registerBinaryIntegral<CheckedPlusFunction>({prefix + "checked_add"});
+  registerBinaryIntegral<CheckedMinusFunction>({prefix + "checked_subtract"});
+  registerBinaryIntegral<CheckedMultiplyFunction>(
+      {prefix + "checked_multiply"});
+  registerBinaryIntegral<CheckedDivideFunction>({prefix + "checked_divide"});
 }
 
 } // namespace bytedance::bolt::functions
