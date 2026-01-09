@@ -60,8 +60,9 @@ void SplitTest::testSplit(
   auto nullAt = [&input](vector_size_t row) { return !input[row].has_value(); };
 
   auto resultFunc = [&](bool constPattern, bool constLimit) {
-    SCOPED_TRACE("Run with constPattern: " + std::to_string(constPattern)
-       + ", constLimit: " + std::to_string(constLimit));
+    SCOPED_TRACE(
+        "Run with constPattern: " + std::to_string(constPattern) +
+        ", constLimit: " + std::to_string(constLimit));
     auto inputString =
         makeFlatVector<StringView>(input.size(), valueAt, nullAt);
 
@@ -80,10 +81,9 @@ void SplitTest::testSplit(
       expressionString = fmt::format(
           "split(c0, '{}', CAST({} AS INT))", pattern, limit.value_or(-1));
     } else if (constLimit) {
-      expressionString = fmt::format(
-          "split(c0, c1, CAST({} AS INT))", limit.value_or(-1));
-    }
-    else {
+      expressionString =
+          fmt::format("split(c0, c1, CAST({} AS INT))", limit.value_or(-1));
+    } else {
       BOLT_CHECK(!constPattern, "split(c0, 'constPattern', c1) is invalid");
       expressionString = "split(c0, c1, c2)";
     }
