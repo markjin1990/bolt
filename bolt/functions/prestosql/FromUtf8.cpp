@@ -27,7 +27,7 @@
  * This modified file is released under the same license.
  * --------------------------------------------------------------------------
  */
-
+#include "bolt/functions/prestosql/FromUtf8.h"
 #include "bolt/expression/DecodedArgs.h"
 #include "bolt/expression/StringWriter.h"
 #include "bolt/expression/VectorFunction.h"
@@ -305,9 +305,17 @@ const std::string FromUtf8Function::kReplacementChar =
     codePointToString(0xFFFD);
 } // namespace
 
+std::shared_ptr<exec::VectorFunction> makeFromUtf8() {
+  return std::make_shared<FromUtf8Function>();
+}
+
 BOLT_DECLARE_VECTOR_FUNCTION(
     udf_from_utf8,
     FromUtf8Function::signatures(),
     std::make_unique<FromUtf8Function>());
+
+void registerFromUtf8(const std::string& name) {
+  BOLT_REGISTER_VECTOR_FUNCTION(udf_from_utf8, name);
+}
 
 } // namespace bytedance::bolt::functions
