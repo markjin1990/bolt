@@ -54,20 +54,13 @@ hdfsFileSystemGenerator() {
             HdfsFileSystem::getServiceEndpoint(filePath, properties.get());
         std::string hdfsIdentity = endpoint.identity();
 
-        if (registeredFilesystems.find(hdfsIdentity) !=
-            registeredFilesystems.end()) {
-          return registeredFilesystems[hdfsIdentity];
-        }
-
-        static std::unordered_map<std::string, std::shared_ptr<FileSystem>>
-            filesystems;
         static std::mutex mtx;
         {
           std::unique_lock<std::mutex> lk(mtx);
-          if (filesystems.find(hdfsIdentity) == filesystems.end()) {
+          if (registeredFilesystems.find(hdfsIdentity) ==
+              registeredFilesystems.end()) {
             auto fileSystem =
                 std::make_shared<HdfsFileSystem>(properties, endpoint);
-            filesystems[hdfsIdentity] = fileSystem;
             registeredFilesystems.insert(hdfsIdentity, fileSystem);
           }
           return registeredFilesystems[hdfsIdentity];
