@@ -472,6 +472,20 @@ void TableScan::preload(std::shared_ptr<connector::ConnectorSplit> split) {
                return *static_cast<std::string*>(debugString);
              },
              &debugString});
+
+        // let TableScan::close() wait for this AsyncSource to finish
+        auto guard = folly::makeGuard([&] {
+          try {
+            if (ctx->asyncThreadCtx()) {
+              ctx->asyncThreadCtx()->out();
+            }
+          } catch (std::exception& e) {
+            LOG(ERROR) << "Exception in TableScan::preload guard: " << e.what();
+          }
+        });
+        if (ctx->asyncThreadCtx()) {
+          ctx->asyncThreadCtx()->in();
+        }
         auto ptr = connector->createDataSource(
             type, table, columns, ctx, task->queryCtx()->queryConfig());
         if (task->isCancelled()) {
