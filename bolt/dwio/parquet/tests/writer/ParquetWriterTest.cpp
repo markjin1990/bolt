@@ -58,8 +58,7 @@ class ParquetWriterTest : public ParquetTestBase {
     bytedance::bolt::connector::hive::CheckHiveConnectorFactoryInit<
         bytedance::bolt::connector::hive::HiveConnectorFactory>();
     auto hiveConnector =
-        connector::getConnectorFactory(
-            connector::hive::HiveConnectorFactory::kHiveConnectorName)
+        connector::getConnectorFactory(connector::kHiveConnectorName)
             ->newConnector(
                 kHiveConnectorId,
                 std::make_shared<config::ConfigBase>(

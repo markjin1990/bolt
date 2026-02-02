@@ -58,10 +58,9 @@ class ArrowConnectorTest : public exec::test::OperatorTestBase {
     bytedance::bolt::connector::arrow::CheckArrowMemoryConnectorFactoryInit<
         bytedance::bolt::connector::arrow::ArrowMemoryConnectorFactory>();
     std::shared_ptr<const config::ConfigBase> config;
-    auto arrowConnector = connector::getConnectorFactory(
-                              connector::arrow::ArrowMemoryConnectorFactory::
-                                  kArrowMemoryConnectorName)
-                              ->newConnector(kArrowConnectorId, config);
+    auto arrowConnector =
+        connector::getConnectorFactory(connector::kArrowMemoryConnectorName)
+            ->newConnector(kArrowConnectorId, config);
     connector::registerConnector(arrowConnector);
 
     sampleBigIntVector_ = createSampleVectorColumn<int64_t>(bigIntVec_);

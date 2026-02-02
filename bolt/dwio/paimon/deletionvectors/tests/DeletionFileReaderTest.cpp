@@ -23,6 +23,7 @@
 #include "bolt/dwio/paimon/deletionvectors/DeletionFileReader.h"
 #include "bolt/dwio/parquet/tests/ParquetTestBase.h"
 #include "bolt/vector/BaseVector.h"
+
 namespace bytedance::bolt::paimon {
 class DeleteionFileReaderTest : public parquet::ParquetTestBase {
  protected:
@@ -32,8 +33,7 @@ class DeleteionFileReaderTest : public parquet::ParquetTestBase {
     bytedance::bolt::connector::hive::CheckHiveConnectorFactoryInit<
         bytedance::bolt::connector::hive::HiveConnectorFactory>();
     auto hiveConnector =
-        connector::getConnectorFactory(
-            connector::hive::HiveConnectorFactory::kHiveConnectorName)
+        connector::getConnectorFactory(connector::kHiveConnectorName)
             ->newConnector(
                 kHiveConnectorId,
                 std::make_shared<config::ConfigBase>(

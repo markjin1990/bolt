@@ -70,8 +70,7 @@ class TpchSpeedTest {
  public:
   TpchSpeedTest() {
     auto tpchConnector =
-        connector::getConnectorFactory(
-            connector::tpch::TpchConnectorFactory::kTpchConnectorName)
+        connector::getConnectorFactory(connector::kTpchConnectorName)
             ->newConnector(
                 kTpchConnectorId_,
                 std::make_shared<config::ConfigBase>(

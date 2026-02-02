@@ -55,8 +55,7 @@ class ParquetTableScanTest : public HiveConnectorTestBase {
     registerParquetReaderFactory();
 
     auto hiveConnector =
-        connector::getConnectorFactory(
-            connector::hive::HiveConnectorFactory::kHiveConnectorName)
+        connector::getConnectorFactory(connector::kHiveConnectorName)
             ->newConnector(
                 kHiveConnectorId,
                 std::make_shared<config::ConfigBase>(

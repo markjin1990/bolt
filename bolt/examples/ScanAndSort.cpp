@@ -101,8 +101,7 @@ int main(int argc, char** argv) {
   // Create a new connector instance from the connector factory and register
   // it:
   auto hiveConnector =
-      connector::getConnectorFactory(
-          connector::hive::HiveConnectorFactory::kHiveConnectorName)
+      connector::getConnectorFactory(connector::kHiveConnectorName)
           ->newConnector(
               kHiveConnectorId,
               std::make_shared<config::ConfigBase>(
