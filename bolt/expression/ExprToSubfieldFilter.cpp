@@ -554,7 +554,7 @@ PrestoExprToSubfieldFilterParser::leafCallToSubfieldFilter(
   const auto* leftSide = call.inputs()[0].get();
 
   common::Subfield subfield;
-  if (call.name() == "eq") {
+  if (call.name() == "eq" || call.name() == "equalto") {
     if (toSubfield(leftSide, subfield)) {
       auto filter = negated ? makeNotEqualFilter(call.inputs()[1], evaluator)
                             : makeEqualFilter(call.inputs()[1], evaluator);
@@ -567,28 +567,28 @@ PrestoExprToSubfieldFilterParser::leafCallToSubfieldFilter(
                             : makeNotEqualFilter(call.inputs()[1], evaluator);
       return combine(subfield, filter);
     }
-  } else if (call.name() == "lte") {
+  } else if (call.name() == "lte" || call.name() == "lessthanorequal") {
     if (toSubfield(leftSide, subfield)) {
       auto filter = negated
           ? makeGreaterThanFilter(call.inputs()[1], evaluator)
           : makeLessThanOrEqualFilter(call.inputs()[1], evaluator);
       return combine(subfield, filter);
     }
-  } else if (call.name() == "lt") {
+  } else if (call.name() == "lt" || call.name() == "lessthan") {
     if (toSubfield(leftSide, subfield)) {
       auto filter = negated
           ? makeGreaterThanOrEqualFilter(call.inputs()[1], evaluator)
           : makeLessThanFilter(call.inputs()[1], evaluator);
       return combine(subfield, filter);
     }
-  } else if (call.name() == "gte") {
+  } else if (call.name() == "gte" || call.name() == "greaterthanorequal") {
     if (toSubfield(leftSide, subfield)) {
       auto filter = negated
           ? makeLessThanFilter(call.inputs()[1], evaluator)
           : makeGreaterThanOrEqualFilter(call.inputs()[1], evaluator);
       return combine(subfield, filter);
     }
-  } else if (call.name() == "gt") {
+  } else if (call.name() == "gt" || call.name() == "greaterthan") {
     if (toSubfield(leftSide, subfield)) {
       auto filter = negated
           ? makeLessThanOrEqualFilter(call.inputs()[1], evaluator)
@@ -606,12 +606,19 @@ PrestoExprToSubfieldFilterParser::leafCallToSubfieldFilter(
       auto filter = makeInFilter(call.inputs()[1], evaluator, negated);
       return combine(subfield, filter);
     }
-  } else if (call.name() == "is_null") {
+  } else if (call.name() == "is_null" || call.name() == "isnull") {
     if (toSubfield(leftSide, subfield)) {
       if (negated) {
         return std::make_pair(std::move(subfield), isNotNull());
       }
       return std::make_pair(std::move(subfield), isNull());
+    }
+  } else if (call.name() == "isnotnull") {
+    if (toSubfield(leftSide, subfield)) {
+      if (negated) {
+        return std::make_pair(std::move(subfield), isNull());
+      }
+      return std::make_pair(std::move(subfield), isNotNull());
     }
   }
   return std::nullopt;
